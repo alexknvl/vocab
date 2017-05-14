@@ -21,8 +21,18 @@ class Vocabulary(object):
             return len(self.words) - 1
         return self.index[w]
 
-    def get(self, w):
-        return self.index.get(w, -1)
+    def add(self, w):
+        r = self.index.get(w, None)
+        if r is not None:
+            return (r, False)
+        self.index[w] = len(self.words)
+        self.words.append(w)
+        return (len(self.words) - 1, True)
+
+
+    def get(self, word, default=-1):
+        """Get the index for a word if there is one"""
+        return self.index.get(word, default)
 
     def resolve(self, w, immutable=False):
         self.get(w) if immutable else self.update(w)
